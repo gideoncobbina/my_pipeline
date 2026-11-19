@@ -1,0 +1,2 @@
+This pipeline collects daily weather data (maximum and minimum temperature and total rainfall) for Accra and Kumasi, Ghana. 
+The data comes from the Open-Meteo Historical Weather API (https://open-meteo.com/en/docs/historical-weather-api), which is free for non-commercial use and needs no API key.
