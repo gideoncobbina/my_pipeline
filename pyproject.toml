@@ -1,0 +1,28 @@
+[project]
+name = "my-pipeline"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "gideoncobbina", email = "gideoncobbina26@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.28.1",
+    "polars>=2.1.0",
+    "prefect>=3.9.3",
+    "python-dotenv>=1.2.4",
+]
+
+[project.scripts]
+my-pipeline = "my_pipeline:main"
+
+[build-system]
+requires = ["uv_build>=0.13.4,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "ruff>=0.17.5",
+]
