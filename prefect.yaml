@@ -18,16 +18,16 @@ deployments:
       name: Prefect Cloud
     work_pool:
       name: my-managed-pool
-      schedules:
+    schedules:
       - cron: "0 9 * * 1-5"
         timezone: Africa/Accra
+
   - name: plan
     entrypoint: my_pipeline/plan_sketch.py:hello_pipeline
     parameters:
       name: Prefect Cloud
     work_pool:
       name: my-managed-pool
-      schedules:
+    schedules:
       - cron: "0 9 * * 1-5"
         timezone: Africa/Accra
-
