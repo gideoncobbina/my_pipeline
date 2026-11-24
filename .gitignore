@@ -8,3 +8,10 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Local settings and secrets
+.env
+
+# Data produced by the pipeline
+data/
+*.sqlite3
