@@ -26,6 +26,9 @@ dev = [
     "pytest>=9.2.0",
     "ruff>=0.17.5",
 ]
+local = [
+    "polars[rtcompat]>=2.1.0",
+]
 
 [tool.ruff]
 line-length = 100
