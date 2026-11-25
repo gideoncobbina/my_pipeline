@@ -91,4 +91,3 @@ def main() -> None:
     else:
         weather_pipeline(location=args.location, start=args.start, end=args.end)
     print(load.count_rows(config.DATABASE))
-    
