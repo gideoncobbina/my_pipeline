@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.scripts]
-my-pipeline = "my_pipeline:main"
+my-pipeline = "my_pipeline.flow:main"
 
 [build-system]
 requires = ["uv_build>=0.13.4,<0.14.0"]
