@@ -7,6 +7,7 @@ from datetime import date
 from pathlib import Path
 
 import polars as pl
+import psycopg
 
 from my_pipeline.transform import build_features
 
@@ -54,8 +55,14 @@ SILVER_COLUMNS = ["location", "observed_on", "temp_max_c", "temp_min_c", "precip
 
 
 @contextmanager
-def open_database(database: str) -> Iterator[tuple[sqlite3.Cursor, str]]:
+def open_database(database: str) -> Iterator[tuple[sqlite3.Cursor | psycopg.Cursor, str]]:
     """Open the database, create the tables, and commit only if everything succeeds."""
+    if database.startswith(("postgresql://", "postgres://")):
+        with psycopg.connect(database, connect_timeout=10) as connection:  # Commits on success.
+            connection.execute(TABLES)
+            with connection.cursor() as cursor:
+                yield cursor, "%s"
+        return
     Path(database).parent.mkdir(parents=True, exist_ok=True)
     with closing(sqlite3.connect(database)) as connection:
         connection.executescript(TABLES)
