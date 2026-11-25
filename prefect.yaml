@@ -8,8 +8,6 @@ pull:
       id: clone
       repository: https://github.com/gideoncobbina/my_pipeline.git
       branch: main
-  - prefect.deployments.steps.set_working_directory:
-      directory: "{{ clone.directory }}/src"
 
 deployments:
   - name: hello
