@@ -13,7 +13,7 @@ pull:
 
 deployments:
   - name: hello
-    entrypoint: my_pipeline/hello.py:hello_pipeline
+    entrypoint: src/my_pipeline/hello.py:hello_pipeline
     parameters:
       name: Prefect Cloud
     work_pool:
@@ -23,7 +23,7 @@ deployments:
         timezone: Africa/Accra
 
   - name: plan
-    entrypoint: my_pipeline/plan_sketch.py:hello_pipeline
+    entrypoint: src/my_pipeline/plan_sketch.py:hello_pipeline
     parameters:
       name: Prefect Cloud
     work_pool:
