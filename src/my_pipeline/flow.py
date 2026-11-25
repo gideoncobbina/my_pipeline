@@ -5,11 +5,11 @@ from datetime import UTC, date, datetime, timedelta
 
 import polars as pl
 from prefect import flow, get_run_logger, task
+from prefect.blocks.system import Secret
 
 from my_pipeline import config, extract, load
 from my_pipeline.validate import validate_weather
 
-from prefect.blocks.system import Secret
 
 def is_temporary(task, task_run, state) -> bool:
     """Tell Prefect to retry only errors that might go away on their own."""
