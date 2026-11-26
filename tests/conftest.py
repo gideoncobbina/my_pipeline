@@ -10,6 +10,7 @@ def prefect_for_tests():
     with prefect_test_harness():
         yield
 
+
 def make_payload(days: int = 3, **changes) -> dict:
     """Build a response shaped like Open-Meteo's, with optional changed fields."""
     daily = {

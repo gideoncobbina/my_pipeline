@@ -1,13 +1,12 @@
 # How Prefect Cloud gets and runs this project's code.
 name: my_pipeline
 
-# Before every run, Prefect clones the repository and moves into src/,
-# so that `import my_pipeline` works.
+# Before every run, Prefect clones the exact commit that CI tested and moves into src/.
 pull:
   - prefect.deployments.steps.git_clone:
       id: clone
       repository: https://github.com/gideoncobbina/my_pipeline.git
-      branch: main
+      commit_sha: "{{ $PREFECT_CODE_REVISION }}"
 
 deployments:
   - name: hello
@@ -16,16 +15,27 @@ deployments:
       name: Prefect Cloud
     work_pool:
       name: my-managed-pool
-    schedules:
-      - cron: "0 9 * * 1-5"
-        timezone: Africa/Accra
 
-  - name: plan
-    entrypoint: src/my_pipeline/plan_sketch.py:hello_pipeline
+  - name: daily-weather
+    version: "{{ $PREFECT_CODE_REVISION }}"
+    description: Load yesterday's weather for Accra into Supabase.
+    entrypoint: src/my_pipeline/flow.py:weather_pipeline
     parameters:
-      name: Prefect Cloud
+      location: accra
+      write_bronze: false # The cloud container's disk disappears after each run.
+      database_secret: my-pipeline-database
     work_pool:
       name: my-managed-pool
+      job_variables:
+        image: prefecthq/prefect:3-python3.12
+        # Installed before each run. Keep these equal to the versions in uv.lock.
+        pip_packages:
+          - prefect==3.9.3
+          - polars==2.1.0
+          - httpx==0.28.1
+          - python-dotenv==1.2.4
+          - "psycopg[binary]==3.3.9"
+    concurrency_limit: 1
     schedules:
-      - cron: "0 9 * * 1-5"
-        timezone: Africa/Accra
+      - cron: "30 6 * * *"
+        timezone: UTC

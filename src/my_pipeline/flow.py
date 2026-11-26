@@ -5,6 +5,7 @@ from datetime import UTC, date, datetime, timedelta
 
 import polars as pl
 from prefect import flow, get_run_logger, task
+from prefect.blocks.system import Secret
 
 from my_pipeline import config, extract, load
 from my_pipeline.validate import validate_weather
@@ -43,12 +44,18 @@ def weather_pipeline(
     start: date | None = None,
     end: date | None = None,
     write_bronze: bool = True,
+    database_secret: str | None = None,
 ) -> None:
     """Load daily weather for one location.
 
     With no dates, the flow catches up: it starts a few days before the newest stored
     date (the watermark) and stops at yesterday. Give start and end to backfill a range.
+    Set database_secret to the name of a Prefect Secret block that holds a PostgreSQL URL.
     """
+    # In Prefect Cloud the URL comes from a Secret block. Locally it comes from config (.env).
+    database = Secret.load(database_secret).get() if database_secret else config.DATABASE
+    # ... the rest of the flow is unchanged
+
     database = config.DATABASE
     end = end or datetime.now(UTC).date() - timedelta(days=1)  # Today isn't finished yet.
     if start is None:
