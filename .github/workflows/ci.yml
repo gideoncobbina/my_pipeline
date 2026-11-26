@@ -46,4 +46,4 @@ jobs:
           PREFECT_API_URL: ${{ vars.PREFECT_API_URL }}
           PREFECT_API_KEY: ${{ secrets.PREFECT_API_KEY }}
           PREFECT_CODE_REVISION: ${{ github.sha }}
-        run: uv run --locked --no-dev prefect deploy --prefect-file ../prefect.yaml --all --no-prompt
+        run: uv run --locked --no-dev prefect deploy --all --no-prompt
